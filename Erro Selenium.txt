@@ -1,0 +1,10 @@
+O executavel do chromedriver deve conter a mesma versão do navegador.
+Encontrei esse video que resolveu o problema.
+
+e que me redirecionou para esse site.
+https://chromedriver.chromium.org/downloads
+
+e depois para esse download.
+https://chromedriver.storage.googleapis.com/index.html?path=91.0.4472.101/
+
+Para baixar a versão correta.
