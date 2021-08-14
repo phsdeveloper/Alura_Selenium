@@ -19,6 +19,7 @@ namespace Alura.LeilaoOnline.Selenium.Fixtures
         //TearDown
         public void Dispose()
         {
+            System.Threading.Thread.Sleep(3000);
             Driver.Quit();
         }
     }
