@@ -50,5 +50,46 @@ namespace Alura.LeilaoOnline.Selenium.Testes
             //assert - devo ser direcionado para uma pagina de agradecimento
             Assert.Contains("Obrigado", driver.PageSource);
         }
+
+
+        [Theory]
+        [InlineData("","","","")]
+        [InlineData("Paulo Santos","","","")]
+        [InlineData("Paulo Santos","teste.teste","","")]
+        [InlineData("Paulo Santos","teste.teste@teste.com.br","","")]
+        [InlineData("Paulo Santos","teste.teste@teste.com.br","123","")]
+        [InlineData("Paulo Santos","teste.teste@teste.com.br","123","1234")]
+        public void DadoInfoInvalidaDeveContinuarNaHome(string nome,string email,string senha,string confirmarSenha)
+        {
+            /*************************************************************************
+             * Arrange - Dado chorme aberto, pagina incial do sistam de leilões      *
+             * Dados de registro validos ingormados                                  *
+            **************************************************************************/
+            driver.Navigate().GoToUrl("http://localhost:5000");
+
+
+            IWebElement inputNome = driver.FindElement(By.Id("Nome"));
+            IWebElement inputEmail = driver.FindElement(By.Id("Email"));
+            IWebElement inputSenha = driver.FindElement(By.Id("Password"));
+            IWebElement inputConfirmaSenha = driver.FindElement(By.Id("ConfirmPassword"));
+            IWebElement BotaoRegistro = driver.FindElement(By.Id("btnRegistro"));
+
+            inputNome.SendKeys(nome);
+            System.Threading.Thread.Sleep(300);
+            inputEmail.SendKeys(email);
+            System.Threading.Thread.Sleep(300);
+            inputSenha.SendKeys(senha);
+            System.Threading.Thread.Sleep(300);
+            inputConfirmaSenha.SendKeys(confirmarSenha);
+            System.Threading.Thread.Sleep(300);
+
+
+            //act - efetuo o registro
+
+            BotaoRegistro.Click();
+
+            //assert - devo ser direcionado para uma pagina de agradecimento
+            Assert.Contains("section-registro", driver.PageSource);
+        }
     }
 }
