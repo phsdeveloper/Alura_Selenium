@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Alura.LeilaoOnline.Selenium.Fixtures;
+using Alura.LeilaoOnline.Selenium.PageObjects;
 using OpenQA.Selenium;
 using Xunit;
 
@@ -18,34 +19,21 @@ namespace Alura.LeilaoOnline.Selenium.Testes
         }
 
         [Fact]
-        public void Teste()
+        public void DadoInfoValidasDeveIrParaPaginaAgradecimento()
         {
             /*************************************************************************
              * Arrange - Dado chorme aberto, pagina incial do sistam de leilões      *
              * Dados de registro validos ingormados                                  *
             **************************************************************************/
-            driver.Navigate().GoToUrl("http://localhost:5000");
+            RegistroPO registroPO = new RegistroPO(driver);
 
+            registroPO.PreencheFormulario($"Paulo Santos {DateTime.Now:dd/MM/yyyy HH:mm:ss}", "paulo.santos@teste.com.br", "123", "123");
 
-            IWebElement inputNome = driver.FindElement(By.Id("Nome"));
-            IWebElement inputEmail = driver.FindElement(By.Id("Email"));
-            IWebElement inputSenha = driver.FindElement(By.Id("Password"));
-            IWebElement inputConfirmaSenha = driver.FindElement(By.Id("ConfirmPassword"));
-            IWebElement BotaoRegistro = driver.FindElement(By.Id("btnRegistro"));
-
-            inputNome.SendKeys("Paulo Santos");
-            System.Threading.Thread.Sleep(300);
-            inputEmail.SendKeys("paulo.santos@teste.com.br");
-            System.Threading.Thread.Sleep(300);
-            inputSenha.SendKeys("123");
-            System.Threading.Thread.Sleep(300);
-            inputConfirmaSenha.SendKeys("123");
-            System.Threading.Thread.Sleep(300);
 
 
             //act - efetuo o registro
 
-            BotaoRegistro.Click();
+            registroPO.SubmeteFormulario();
 
             //assert - devo ser direcionado para uma pagina de agradecimento
             Assert.Contains("Obrigado", driver.PageSource);
@@ -65,31 +53,50 @@ namespace Alura.LeilaoOnline.Selenium.Testes
              * Arrange - Dado chorme aberto, pagina incial do sistam de leilões      *
              * Dados de registro validos ingormados                                  *
             **************************************************************************/
-            driver.Navigate().GoToUrl("http://localhost:5000");
-
-
-            IWebElement inputNome = driver.FindElement(By.Id("Nome"));
-            IWebElement inputEmail = driver.FindElement(By.Id("Email"));
-            IWebElement inputSenha = driver.FindElement(By.Id("Password"));
-            IWebElement inputConfirmaSenha = driver.FindElement(By.Id("ConfirmPassword"));
-            IWebElement BotaoRegistro = driver.FindElement(By.Id("btnRegistro"));
-
-            inputNome.SendKeys(nome);
-            System.Threading.Thread.Sleep(300);
-            inputEmail.SendKeys(email);
-            System.Threading.Thread.Sleep(300);
-            inputSenha.SendKeys(senha);
-            System.Threading.Thread.Sleep(300);
-            inputConfirmaSenha.SendKeys(confirmarSenha);
-            System.Threading.Thread.Sleep(300);
-
+            RegistroPO registroPO = new RegistroPO(driver);
+            registroPO.Visitar();
+            registroPO.PreencheFormulario(nome,email,senha,confirmarSenha);
 
             //act - efetuo o registro
 
-            BotaoRegistro.Click();
+            registroPO.SubmeteFormulario();
 
             //assert - devo ser direcionado para uma pagina de agradecimento
             Assert.Contains("section-registro", driver.PageSource);
         }
+
+        [Fact]
+        public void DadoNomeEmBrancoDeveMostrarMensagemDeErro()
+        {
+            //Arrange
+            RegistroPO registroPO = new RegistroPO(driver);
+            registroPO.Visitar();
+            //act - efetuo o registro
+
+            registroPO.SubmeteFormulario();
+          
+
+            //assert - devo ser direcionado para uma pagina de agradecimento
+            
+            Assert.Equal("The Nome field is required.", registroPO.EmailMensagemNome);
+        }
+
+        [Fact]
+        public void DadoEmailInvalidoDeveMostrarMensagemDeErro()
+        {
+            //Arrange
+            RegistroPO registroPO = new RegistroPO(driver);
+            registroPO.Visitar();
+            registroPO.PreencheFormulario(nome:"",email:"Paulo",senha:"",confirmaSenha:"");
+
+            //act 
+            registroPO.SubmeteFormulario();
+
+            //assert 
+            
+            Assert.Equal("Please enter a valid email address.", registroPO.EmailMensagemErro);
+        }
+
+
     }
 }
