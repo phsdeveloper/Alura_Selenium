@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
-using OpenQA.Selenium;
-using Alura.LeilaoOnline.Selenium.Fixtures;
+﻿using Alura.LeilaoOnline.Selenium.Fixtures;
 using Alura.LeilaoOnline.Selenium.PageObjects;
+using OpenQA.Selenium;
+using Xunit;
 
 namespace Alura.LeilaoOnline.Selenium.Testes
 {
     [Collection("Chrome Driver")]
-   public class AoEfetuarLogout
+    public class AoEfetuarLogout
     {
         private IWebDriver driver;
 

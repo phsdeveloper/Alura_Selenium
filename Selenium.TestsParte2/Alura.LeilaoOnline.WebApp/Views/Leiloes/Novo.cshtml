@@ -24,10 +24,11 @@
                     <!--div.input-field descricao-->
                     <div class="row">
                         <div class="input-field col s6">
-                            <select asp-for="Categoria">
+                            <select asp-for="Categoria" id="Categoria">
                                 <option value="Automóveis">Automóveis</option>
                                 <option value="Item de Colecionador">Item de Colecionador</option>
                                 <option value="Arte e Pintura">Arte e Pintura</option>
+                                <option value="Teste">Teste</option>
                             </select>
                             <label asp-for="Categoria"></label>
                             <span class="helper-text msg-erro" asp-validation-for="Categoria"></span>
